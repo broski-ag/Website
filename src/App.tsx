@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Play, Pause, Volume2, VolumeX, Maximize, Home, Instagram, Mail } from 'lucide-react';
 import FloatingIcons from "./components/FloatingIcons";
 
@@ -182,6 +183,33 @@ const FloatingNavbar: React.FC = () => {
 };
 
 function App() {
+  const cinematicRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+      }
+    );
+
+    if (cinematicRef.current) {
+      observer.observe(cinematicRef.current);
+    }
+
+    return () => {
+      if (cinematicRef.current) {
+        observer.unobserve(cinematicRef.current);
+      }
+    };
+  }, []);
+
   const landscapeVideos = [
     {
       src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
@@ -345,7 +373,7 @@ function App() {
       </section>
 
       {/* 16:9 Portfolio Section */}
-      <section id="videos" className="py-12 md:py-20 px-4 md:px-8 relative overflow-hidden bg-gradient-to-br from-[#0a0a0f] via-[#0f1419] to-[#1a1a2e]"> 
+      <section id="videos" className="py-12 md:py-20 px-4 md:px-8 relative overflow-hidden bg-gradient-to-br from-[#0a0a0f] via-[#0f1419] to-[#1a1a2e]" ref={cinematicRef}> 
         {/* Small Grid Background */}
         <div className="absolute inset-0">
           <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -381,13 +409,14 @@ function App() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
               {landscapeVideos.map((video, index) => (
-                <VideoPlayer
-                  key={index}
-                  src={video.src}
-                  poster={video.poster}
-                  title={video.title}
-                  aspectRatio="16:9"
-                />
+                <div key={index} className={`slide-up ${isVisible ? 'animate' : ''}`}>
+                  <VideoPlayer
+                    src={video.src}
+                    poster={video.poster}
+                    title={video.title}
+                    aspectRatio="16:9"
+                  />
+                </div>
               ))}
             </div>
             </div>
