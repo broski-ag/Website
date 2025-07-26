@@ -106,10 +106,17 @@ const FloatingNavbar: React.FC = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const scrollToSection = (sectionId: string) => {
+  const scrollToSection = (sectionId: string, event?: React.MouseEvent) => {
+    if (event) {
+      event.preventDefault();
+    }
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest'
+      });
       setActiveSection(sectionId);
     }
   };
@@ -126,7 +133,7 @@ const FloatingNavbar: React.FC = () => {
   <div className="absolute inset-0 bg-gradient-to-br from-[#0e006b] via-[#130029] to-[#00020d] opacity-20 rounded-full -z-10"></div>
         <div className="flex items-center space-x-2 md:space-x-8">
           <button
-            onClick={() => scrollToSection('home')}
+            onClick={(e) => scrollToSection('home', e)}
             className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 ${
               activeSection === 'home' 
                 ? 'bg-blue-600 text-white text-glow-white' 
@@ -138,7 +145,7 @@ const FloatingNavbar: React.FC = () => {
           </button>
           
           <button
-            onClick={() => scrollToSection('videos')}
+            onClick={(e) => scrollToSection('videos', e)}
             className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 ${
               activeSection === 'videos' 
                 ? 'bg-blue-600 text-white text-glow-white' 
@@ -158,7 +165,7 @@ const FloatingNavbar: React.FC = () => {
           </button>
           
           <button
-            onClick={() => scrollToSection('contact')}
+            onClick={(e) => scrollToSection('contact', e)}
             className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 ${
               activeSection === 'contact' 
                 ? 'bg-blue-600 text-white text-glow-white' 

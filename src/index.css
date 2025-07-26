@@ -7,6 +7,8 @@
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
+  will-change: transform;
+  transform: translateZ(0);
   }
 
 .floating-icon {
@@ -14,6 +16,8 @@
   opacity: 100;
   animation: floatY ease-in-out infinite;
   will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .glow {
@@ -75,6 +79,30 @@
 html {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+}
+
+/* Smooth scrolling for all elements */
+* {
+  scroll-behavior: smooth;
+}
+
+/* Performance optimizations */
+body {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimize video elements */
+video {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimize sections for smooth scrolling */
+section {
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* Improve touch targets on mobile */

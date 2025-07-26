@@ -17,12 +17,26 @@ const fixedIconPositions = [
 const FloatingIcons: React.FC = () => {
   const [scrollY, setScrollY] = useState(0); 
   const [isMobile, setIsMobile] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
+    let ticking = false;
+    
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          // Hide icons when scrolled past hero section for better performance
+          setIsVisible(window.scrollY < window.innerHeight);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", checkMobile);
     checkMobile(); // Initial check
     
@@ -35,6 +49,8 @@ const FloatingIcons: React.FC = () => {
   // Reduce number of icons on mobile
   const iconsToShow = isMobile ? fixedIconPositions.slice(0, 6) : fixedIconPositions;
 
+  if (!isVisible) return null;
+
   return (
     <div
       className="floating-icons"
@@ -46,8 +62,8 @@ const FloatingIcons: React.FC = () => {
         height: "100vh",
         pointerEvents: "none",
         zIndex: 0,
-        transform: `translateY(${scrollY * -1.5}px)`,
-        transition: "transform 0.2s linear",
+        transform: `translate3d(0, ${scrollY * -0.5}px, 0)`,
+        willChange: "transform",
       }}
     >
       {iconsToShow.map((icon, i) => {
@@ -65,11 +81,12 @@ const FloatingIcons: React.FC = () => {
               left: icon.left,
               width: isMobile ? "30px" : "40px",
               opacity: 100,
-              transform: `rotate(${rotation}deg) scale(${scale})`,
+              transform: `translate3d(0, 0, 0) rotate(${rotation}deg) scale(${scale})`,
               filter: isMobile ? "blur(0.5px) drop-shadow(0 0 4px rgba(59, 130, 246, 0.2))" : "blur(1px) drop-shadow(0 0 8px rgba(59, 130, 246, 0.3))",
               animation: `floatY ${6 + Math.random() * 4}s ease-in-out infinite`,
               animationDelay: `${Math.random() * 0}s`,
               willChange: "transform",
+              backfaceVisibility: "hidden",
             }}
           />
         );
