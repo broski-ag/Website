@@ -300,13 +300,27 @@ function App() {
               </p>
               <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4 mb-8 md:mb-16 px-4">
                 <button 
-                  onClick={() => document.getElementById('videos')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('videos')?.scrollIntoView({ 
+                      behavior: 'smooth',
+                      block: 'start',
+                      inline: 'nearest'
+                    });
+                  }}
                   className="px-6 sm:px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors duration-200 w-full sm:w-auto text-glow-white"
                 >
                   View Work
                 </button>
                 <button 
-                  onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('contact')?.scrollIntoView({ 
+                      behavior: 'smooth',
+                      block: 'start',
+                      inline: 'nearest'
+                    });
+                  }}
                   className="px-6 sm:px-8 py-3 border border-gray-400 hover:border-white rounded-lg font-medium transition-colors duration-200 w-full sm:w-auto text-glow-white"
                 >
                   Contact Me
