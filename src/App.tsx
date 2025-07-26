@@ -185,6 +185,8 @@ const FloatingNavbar: React.FC = () => {
 function App() {
   const cinematicRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const socialMediaRef = useRef<HTMLDivElement>(null);
+  const [isSocialMediaVisible, setIsSocialMediaVisible] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -203,9 +205,28 @@ function App() {
       observer.observe(cinematicRef.current);
     }
 
+    const socialMediaObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsSocialMediaVisible(true);
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+      }
+    );
+
+    if (socialMediaRef.current) {
+      socialMediaObserver.observe(socialMediaRef.current);
+    }
+
     return () => {
       if (cinematicRef.current) {
         observer.unobserve(cinematicRef.current);
+      }
+      if (socialMediaRef.current) {
+        socialMediaObserver.unobserve(socialMediaRef.current);
       }
     };
   }, []);
@@ -424,7 +445,7 @@ function App() {
       </section>
 
       {/* 9:16 Portfolio Section */}
-      <section className="py-12 md:py-20 px-4 md:px-8 relative overflow-hidden bg-gradient-to-br from-[#0a0a0f] via-[#0f1419] to-[#1a1a2e]">
+      <section className="py-12 md:py-20 px-4 md:px-8 relative overflow-hidden bg-gradient-to-br from-[#0a0a0f] via-[#0f1419] to-[#1a1a2e]" ref={socialMediaRef}>
         {/* Small Grid Background */}
         <div className="absolute inset-0">
           <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -460,13 +481,19 @@ function App() {
             </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 max-w-6xl mx-auto">
               {portraitVideos.map((video, index) => (
-                <VideoPlayer
-                  key={index}
-                  src={video.src}
-                  poster={video.poster}
-                  title={video.title}
-                  aspectRatio="9:16"
-                />
+                <div 
+                  key={index} 
+                  className={`${
+                    index % 2 === 0 ? 'slide-left' : 'slide-right'
+                  } ${isSocialMediaVisible ? 'animate' : ''}`}
+                >
+                  <VideoPlayer
+                    src={video.src}
+                    poster={video.poster}
+                    title={video.title}
+                    aspectRatio="9:16"
+                  />
+                </div>
               ))}
             </div>
             </div>

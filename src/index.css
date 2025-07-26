@@ -91,6 +91,39 @@
 .slide-up:nth-child(5) { transition-delay: 0.5s; }
 .slide-up:nth-child(6) { transition-delay: 0.6s; }
 
+/* Slide horizontal animations */
+.slide-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.slide-left.animate {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.slide-right.animate {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Staggered animation delays for horizontal slides */
+.slide-left:nth-child(1), .slide-right:nth-child(1) { transition-delay: 0.1s; }
+.slide-left:nth-child(2), .slide-right:nth-child(2) { transition-delay: 0.2s; }
+.slide-left:nth-child(3), .slide-right:nth-child(3) { transition-delay: 0.3s; }
+.slide-left:nth-child(4), .slide-right:nth-child(4) { transition-delay: 0.4s; }
+.slide-left:nth-child(5), .slide-right:nth-child(5) { transition-delay: 0.5s; }
+.slide-left:nth-child(6), .slide-right:nth-child(6) { transition-delay: 0.6s; }
+.slide-left:nth-child(7), .slide-right:nth-child(7) { transition-delay: 0.7s; }
+.slide-left:nth-child(8), .slide-right:nth-child(8) { transition-delay: 0.8s; }
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
